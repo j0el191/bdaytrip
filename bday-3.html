@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Birthday — The Shortlist</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F5F0E8;
+    --dark: #1A1A18;
+    --forest: #2D4A35;
+    --moss: #4A6741;
+    --gold: #C8963E;
+    --stone: #8A8070;
+    --light-stone: #E8E2D8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--cream);
+    color: var(--dark);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+  }
+
+  /* HERO */
+  .hero {
+    background: var(--forest);
+    padding: 60px 40px 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 30% 50%, rgba(200,150,62,0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, rgba(74,103,65,0.3) 0%, transparent 50%);
+  }
+  .hero-inner { position: relative; z-index: 1; }
+  .dates-badge {
+    display: inline-block;
+    background: var(--gold);
+    color: white;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 2px;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 6vw, 72px);
+    font-weight: 900;
+    color: white;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 14px;
+  }
+  .hero h1 span { color: var(--gold); }
+  .hero p {
+    color: rgba(255,255,255,0.65);
+    font-size: 15px;
+    letter-spacing: 0.03em;
+  }
+
+  /* LAYOUT */
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* CARDS */
+  .cards {
+    padding: 48px 24px;
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .card {
+    background: white;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.07);
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+  }
+
+  .card-img {
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+    min-height: 260px;
+  }
+  .card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .card-letter {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    width: 36px;
+    height: 36px;
+    background: var(--forest);
+    color: white;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
+    z-index: 2;
+  }
+
+  .card-body {
+    padding: 24px 28px 24px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .card-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+  .tag {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 2px;
+    background: var(--light-stone);
+    color: var(--stone);
+  }
+  .tag.glamping { background: #E8F0E4; color: var(--moss); }
+  .tag.cottage { background: #EEE8F4; color: #6B5B95; }
+  .tag.lodge { background: #E4EEF0; color: #2D6B73; }
+  .tag.house { background: #F0EAE4; color: #8B5E3C; }
+
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--dark);
+    line-height: 1.2;
+    margin-bottom: 4px;
+  }
+  .card-location {
+    font-size: 13px;
+    color: var(--stone);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .card-location svg {
+    flex-shrink: 0;
+  }
+
+  .stats-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--light-stone);
+    flex-wrap: wrap;
+  }
+  .stat {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .stat-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--stone);
+  }
+  .stat-value {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--dark);
+  }
+  .stat-value.price {
+    color: var(--forest);
+    font-weight: 600;
+  }
+  .stat-value.dist {
+    color: var(--gold);
+    font-weight: 600;
+  }
+
+  .pros-cons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 18px;
+    flex: 1;
+  }
+  .pro-con-box h4 {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 7px;
+  }
+  .pros h4 { color: var(--moss); }
+  .cons h4 { color: #B85C38; }
+  .pro-con-box ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .pro-con-box li {
+    font-size: 12.5px;
+    line-height: 1.4;
+    padding-left: 16px;
+    position: relative;
+    color: #444;
+  }
+  .pros li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--moss);
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .cons li::before {
+    content: '✕';
+    position: absolute;
+    left: 0;
+    color: #B85C38;
+    font-size: 10px;
+    font-weight: 600;
+  }
+
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: auto;
+    padding-top: 14px;
+    border-top: 1px solid var(--light-stone);
+  }
+  .highlights {
+    font-size: 12px;
+    color: var(--stone);
+    flex: 1;
+    line-height: 1.4;
+  }
+  .highlights strong {
+    color: var(--dark);
+  }
+
+  .book-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--forest);
+    color: white;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    padding: 9px 18px;
+    border-radius: 2px;
+    white-space: nowrap;
+    transition: background 0.2s;
+    flex-shrink: 0;
+  }
+  .book-btn:hover { background: var(--moss); }
+
+  /* VOTE FOOTER */
+  .vote-section {
+    background: var(--dark);
+    padding: 48px 24px;
+    text-align: center;
+  }
+  .vote-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 10px;
+  }
+  .vote-section p {
+    color: rgba(255,255,255,0.5);
+    font-size: 14px;
+    margin-bottom: 28px;
+  }
+  .vote-letters {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .vote-letter {
+    width: 52px;
+    height: 52px;
+    border: 2px solid rgba(255,255,255,0.2);
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.6);
+  }
+
+  /* FOOTER NOTE */
+  .footer-note {
+    background: var(--light-stone);
+    padding: 20px 24px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--stone);
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 640px) {
+    .card {
+      grid-template-columns: 1fr;
+    }
+    .card-img {
+      min-height: 200px;
+      height: 200px;
+    }
+    .pros-cons {
+      grid-template-columns: 1fr;
+    }
+    .hero { padding: 40px 20px 36px; }
+    .card-body { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="dates-badge">13–15 March 2026 · 8 People</div>
+    <h1>The <span>Birthday</span><br>Shortlist</h1>
+  </div>
+</div>
+
+<!-- CARDS -->
+<div class="cards">
+
+  <!-- A: Camp Cynrig -->
+  <div class="card">
+    <div class="card-img">
+      <div class="card-letter">A</div>
+      <img src="https://www.groupaccommodation.com/wp-content/uploads/imported/DSCF1380.jpg"
+           onerror="this.src='https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=600&q=80'"
+           alt="Camp Cynrig">
+    </div>
+    <div class="card-body">
+      <div class="card-meta">
+        <span class="tag glamping">Glamping</span>
+        <span class="tag">Wales</span>
+      </div>
+      <div class="card-title">Camp Cynrig</div>
+      <div class="card-location">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Brecon Beacons National Park, Wales
+      </div>
+      <div class="stats-row">
+        <div class="stat">
+          <span class="stat-label">Price</span>
+          <span class="stat-value price">~£230 whole site / weekend (£33pp × 7 / £29pp × 8)</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Sleeps</span>
+          <span class="stat-value">Up to 18</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">From Bournemouth</span>
+          <span class="stat-value dist">~2h 30m</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Type</span>
+          <span class="stat-value">Bell tents + cabin</span>
+        </div>
+      </div>
+      <div class="pros-cons">
+        <div class="pro-con-box pros">
+          <h4>Pros</h4>
+          <ul>
+            <li>Exclusive site hire for the group</li>
+            <li>Cheapest option overall</li>
+            <li>Campfires, log burners, wood-fired oven</li>
+            <li>Wild swimming in river on-site</li>
+            <li>Pen Y Fan walkable from door</li>
+            <li>Stunning remote setting</li>
+          </ul>
+        </div>
+        <div class="pro-con-box cons">
+          <h4>Cons</h4>
+          <ul>
+            <li>No WiFi, limited phone signal</li>
+            <li>No bedding/towels provided</li>
+            <li>Outdoor kitchens only (no indoor cooking)</li>
+            <li>No hot tub</li>
+            <li>Cars not allowed on site</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="highlights"><strong>Best for:</strong> The most adventurous, outdoorsy option. Cheapest. Feels genuinely remote.</div>
+        <a class="book-btn" href="https://www.groupaccommodation.com/properties/camp-cynrig-brecon-beacons-powys" target="_blank">View →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- B: Celtic Woodland -->
+  <div class="card">
+    <div class="card-img">
+      <div class="card-letter">B</div>
+      <img src="https://hipcamp-res.cloudinary.com/images/f_auto,c_limit,w_1120,q_auto/tripadee-photos/771d0a75612b67bb4ec9b190c1e690e40e7a8313/large/celtic-woodland-holidays-epynt-mid-wales.jpg"
+           onerror="this.src='https://hipcamp-res.cloudinary.com/f_auto,c_limit,w_1120,q_auto/v1714997177/campground-photos/awk228jpamcx6g9sdie9.jpg'"
+           alt="Celtic Woodland">
+    </div>
+    <div class="card-body">
+      <div class="card-meta">
+        <span class="tag glamping">Glamping</span>
+        <span class="tag">Wales</span>
+      </div>
+      <div class="card-title">Celtic Woodland Holidays</div>
+      <div class="card-location">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Builth Wells, Powys, Wales
+      </div>
+      <div class="stats-row">
+        <div class="stat">
+          <span class="stat-label">Price</span>
+          <span class="stat-value price">~£45–60/night per pod (~£26pp × 7)</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Type</span>
+          <span class="stat-value">Off-grid eco pods</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">From Bournemouth</span>
+          <span class="stat-value dist">~2h 45m</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Setting</span>
+          <span class="stat-value">Woodland, Wye Valley</span>
+        </div>
+      </div>
+      <div class="pros-cons">
+        <div class="pro-con-box pros">
+          <h4>Pros</h4>
+          <ul>
+            <li>Off-grid eco pods with solar panels</li>
+            <li>Games room (pool, table tennis, air hockey)</li>
+            <li>Pizza oven &amp; firepit on-site</li>
+            <li>Beautiful Wye Valley views</li>
+            <li>Budget-friendly per person</li>
+          </ul>
+        </div>
+        <div class="pro-con-box cons">
+          <h4>Cons</h4>
+          <ul>
+            <li>Only sleeps 7 — rules out if 8 people come</li>
+            <li>Not exclusive hire — pods booked individually</li>
+            <li>More of a family campsite vibe</li>
+            <li>No hot tub</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="highlights"><strong>Best for:</strong> Budget option with fun communal facilities. Less exclusive feeling.</div>
+        <a class="book-btn" href="https://www.hipcamp.com/en-GB/land/wales-powys-celtic-woodland-holidays-y0zh85em/sites/650110?adults=7&children=0&arrive=2026-03-13&depart=2026-03-15" target="_blank">View →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- C: Cuddfan -->
+  <div class="card">
+    <div class="card-img">
+      <div class="card-letter">C</div>
+      <img src="https://hipcamp-res.cloudinary.com/images/f_auto,c_limit,w_1280,q_auto/v1667209355/campground-photos/cqzmnzjz0tblasiwso8n/cuddfan-the-hiding-place-cuddfan-the-hiding-place-brecon-beacons-national-park.jpg"
+           onerror="this.src='https://hipcamp-res.cloudinary.com/images/f_auto,c_limit,w_1120,q_auto/v1667209354/campground-photos/khvppvc1tlsnhfhtn6ti/cuddfan-the-hiding-place-cuddfan-the-hiding-place-brecon-beacons-national-park.jpg'"
+           alt="Cuddfan The Hiding Place">
+    </div>
+    <div class="card-body">
+      <div class="card-meta">
+        <span class="tag glamping">Bell Tents</span>
+        <span class="tag">Wales</span>
+      </div>
+      <div class="card-title">Cuddfan — The Hiding Place</div>
+      <div class="card-location">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Crickhowell, Black Mountains, Wales
+      </div>
+      <div class="stats-row">
+        <div class="stat">
+          <span class="stat-label">Price</span>
+          <span class="stat-value price">From £40/night per tent (~£23pp × 7 / £20pp × 8)</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Sleeps</span>
+          <span class="stat-value">4 per tent (2 tents = 8 max)</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">From Bournemouth</span>
+          <span class="stat-value dist">~2h 15m</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Setting</span>
+          <span class="stat-value">Riverside, Black Mountains</span>
+        </div>
+      </div>
+      <div class="pros-cons">
+        <div class="pro-con-box pros">
+          <h4>Pros</h4>
+          <ul>
+            <li>Stunning riverside location</li>
+            <li>100% guest rating</li>
+            <li>Direct access to mountain walks</li>
+            <li>Riverside pub 10 min walk away</li>
+            <li>Hot showers &amp; private toilet</li>
+            <li>Cheapest nightly rate</li>
+          </ul>
+        </div>
+        <div class="pro-con-box cons">
+          <h4>Cons</h4>
+          <ul>
+            <li>Only sleeps 8 max (tight across 2 tents)</li>
+            <li>Very remote — limited nearby food options</li>
+            <li>Better suited to couples/small groups</li>
+            <li>No kitchen — outdoor cooking only</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="highlights"><strong>Best for:</strong> Most scenic &amp; romantic. Great if 8 is the number but tight fit.</div>
+        <a class="book-btn" href="https://www.hipcamp.com/en-GB/land/wales-cuddfan-the-hiding-place-r57h5nme/sites/746667?adults=8&arrive=2026-03-13&depart=2026-03-15&instantBook=true" target="_blank">View →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- D: Knightwood Oak -->
+  <div class="card">
+    <div class="card-img">
+      <div class="card-letter">D</div>
+      <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/813867261.jpg?k=f66e849e936aef8f282176c02465c1c1979cdab71156afa42d8ce1093749efd0&o="
+           onerror="this.src='https://cf.bstatic.com/xdata/images/hotel/max1024x768/813867170.jpg?k=8d2b29bbbb5ce2aeffdebe4521b13d4c9fa861868c201a1759a3ab77cc492f71&o='"
+           alt="Knightwood Oak New Forest">
+    </div>
+    <div class="card-body">
+      <div class="card-meta">
+        <span class="tag cottage">Holiday Home</span>
+        <span class="tag">New Forest</span>
+      </div>
+      <div class="card-title">Knightwood Oak</div>
+      <div class="card-location">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Woodlands, New Forest, Hampshire
+      </div>
+      <div class="stats-row">
+        <div class="stat">
+          <span class="stat-label">Price</span>
+          <span class="stat-value price">~£421 total / weekend (£60pp × 7 / £53pp × 8)</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Sleeps</span>
+          <span class="stat-value">8 (4 bedrooms)</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">From Bournemouth</span>
+          <span class="stat-value dist">~45 mins 🏆</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Type</span>
+          <span class="stat-value">Entire house, WiFi</span>
+        </div>
+      </div>
+      <div class="pros-cons">
+        <div class="pro-con-box pros">
+          <h4>Pros</h4>
+          <ul>
+            <li>Closest to Bournemouth by far</li>
+            <li>Fully equipped kitchen, WiFi</li>
+            <li>Private house — proper beds for everyone</li>
+            <li>New Forest on the doorstep</li>
+            <li>Free parking</li>
+          </ul>
+        </div>
+        <div class="pro-con-box cons">
+          <h4>Cons</h4>
+          <ul>
+            <li>No hot tub or outdoor fire</li>
+            <li>Quiet hours 10pm — limits late nights</li>
+            <li>No parties policy</li>
+            <li>1 bathroom for 8 people</li>
+            <li>Less "adventure" feel than others</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="highlights"><strong>Best for:</strong> Easiest drive, comfiest stay. Most accessible but least adventurous.</div>
+        <a class="book-btn" href="https://www.booking.com/hotel/gb/knightwood-oak-a-cozy-magical-retreat-sleeps-8.en-gb.html?aid=1259717&label=metahometogo-link-metagb-hotel-13937926_xqdz-bbd841551edfc97e6cbba517446a1af3_dev-dsk_los-2_ver-vr_br-h2g&checkin=2026-03-13&checkout=2026-03-15&group_adults=8&group_children=0" target="_blank">View →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- E: James' Place -->
+  <div class="card">
+    <div class="card-img">
+      <div class="card-letter">E</div>
+      <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/305227641.jpg?k=8a9ddabf93401da053130f3294335880ee036c82bf16be4af308dae926223982&o="
+           onerror="this.src='https://cf.bstatic.com/xdata/images/hotel/max1024x768/305228882.jpg?k=80124cf53708f6d78a486e5824b526325e0bfc2f47a12e78dd97569b0cc28150&o='"
+           alt="James Place Bike Park Wales">
+    </div>
+    <div class="card-body">
+      <div class="card-meta">
+        <span class="tag house">Holiday House</span>
+        <span class="tag">Wales</span>
+      </div>
+      <div class="card-title">James' Place @ Bike Park Wales</div>
+      <div class="card-location">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Merthyr Tydfil, South Wales
+      </div>
+      <div class="stats-row">
+        <div class="stat">
+          <span class="stat-label">Price</span>
+          <span class="stat-value price">~£189/night (~£378 total) (£54pp × 7 / £47pp × 8)</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Sleeps</span>
+          <span class="stat-value">8 (3 bedrooms)</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">From Bournemouth</span>
+          <span class="stat-value dist">~2h 15m</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Hot Tub</span>
+          <span class="stat-value">Yes (+£40 to heat)</span>
+        </div>
+      </div>
+      <div class="pros-cons">
+        <div class="pro-con-box pros">
+          <h4>Pros</h4>
+          <ul>
+            <li>Hot tub (small extra cost)</li>
+            <li>Quirky, fun interior style</li>
+            <li>Town nearby — pubs, restaurants, shops</li>
+            <li>5 mins from Bike Park Wales &amp; Pen Y Fan</li>
+            <li>9.3/10 guest rating (729 reviews)</li>
+            <li>Big-screen TV, fully equipped kitchen</li>
+          </ul>
+        </div>
+        <div class="pro-con-box cons">
+          <h4>Cons</h4>
+          <ul>
+            <li>No stag/party events allowed</li>
+            <li>Town setting — not as remote/scenic</li>
+            <li>Some bunk beds (not all private beds)</li>
+            <li>1 shower room for 8 people</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="highlights"><strong>Best for:</strong> Best balance of comfort + adventure. Hot tub, great reviews, near Brecon.</div>
+        <a class="book-btn" href="https://www.booking.com/hotel/gb/james-place-bike-park-wales-and-the-brecon-beacons.en-gb.html?aid=2127351&label=BC-351491735&checkin=2026-03-13&checkout=2026-03-15&group_adults=8&group_children=0&no_rooms=3" target="_blank">View →</a>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+<!-- QUICK COMPARE TABLE -->
+<div style="background: white; padding: 40px 24px; border-top: 1px solid var(--light-stone);">
+  <div style="max-width: 900px; margin: 0 auto;">
+    <h2 style="font-family: 'Playfair Display', serif; font-size: 24px; margin-bottom: 24px; color: var(--dark);">Quick Compare</h2>
+    <div style="overflow-x: auto;">
+      <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+        <thead>
+          <tr style="background: var(--forest); color: white; text-align: left;">
+            <th style="padding: 12px 14px; font-weight: 500; letter-spacing: 0.05em;"></th>
+            <th style="padding: 12px 14px; font-weight: 500; letter-spacing: 0.05em;">Price (wknd)</th>
+            <th style="padding: 12px 14px; font-weight: 500; letter-spacing: 0.05em;">From BH</th>
+            <th style="padding: 12px 14px; font-weight: 500; letter-spacing: 0.05em;">Hot Tub</th>
+            <th style="padding: 12px 14px; font-weight: 500; letter-spacing: 0.05em;">Private</th>
+            <th style="padding: 12px 14px; font-weight: 500; letter-spacing: 0.05em;">WiFi</th>
+            <th style="padding: 12px 14px; font-weight: 500; letter-spacing: 0.05em;">Campfire</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom: 1px solid var(--light-stone); background: #FAFAF8;">
+            <td style="padding: 11px 14px; font-weight: 500;">A — Camp Cynrig</td>
+            <td style="padding: 11px 14px; color: var(--forest); font-weight: 600;">~£230</td>
+            <td style="padding: 11px 14px;">2h 30m</td>
+            <td style="padding: 11px 14px; color: #B85C38;">✕</td>
+            <td style="padding: 11px 14px; color: var(--moss);">✓ Whole site</td>
+            <td style="padding: 11px 14px; color: #B85C38;">✕</td>
+            <td style="padding: 11px 14px; color: var(--moss);">✓</td>
+          </tr>
+          <tr style="border-bottom: 1px solid var(--light-stone);">
+            <td style="padding: 11px 14px; font-weight: 500;">B — Celtic Woodland</td>
+            <td style="padding: 11px 14px; color: var(--forest); font-weight: 600;">~£90–120</td>
+            <td style="padding: 11px 14px;">2h 45m</td>
+            <td style="padding: 11px 14px; color: #B85C38;">✕</td>
+            <td style="padding: 11px 14px; color: #B85C38;">✕ Shared site</td>
+            <td style="padding: 11px 14px; color: var(--moss);">✓</td>
+            <td style="padding: 11px 14px; color: var(--moss);">✓</td>
+          </tr>
+          <tr style="border-bottom: 1px solid var(--light-stone); background: #FAFAF8;">
+            <td style="padding: 11px 14px; font-weight: 500;">C — Cuddfan</td>
+            <td style="padding: 11px 14px; color: var(--forest); font-weight: 600;">~£160</td>
+            <td style="padding: 11px 14px;">2h 15m</td>
+            <td style="padding: 11px 14px; color: #B85C38;">✕</td>
+            <td style="padding: 11px 14px; color: var(--moss);">✓ 2 tents</td>
+            <td style="padding: 11px 14px; color: #B85C38;">✕</td>
+            <td style="padding: 11px 14px; color: var(--moss);">✓</td>
+          </tr>
+          <tr style="border-bottom: 1px solid var(--light-stone);">
+            <td style="padding: 11px 14px; font-weight: 500;">D — Knightwood Oak</td>
+            <td style="padding: 11px 14px; color: var(--forest); font-weight: 600;">~£421</td>
+            <td style="padding: 11px 14px; color: var(--gold); font-weight: 600;">45 mins 🏆</td>
+            <td style="padding: 11px 14px; color: #B85C38;">✕</td>
+            <td style="padding: 11px 14px; color: var(--moss);">✓ Whole house</td>
+            <td style="padding: 11px 14px; color: var(--moss);">✓</td>
+            <td style="padding: 11px 14px; color: #B85C38;">✕</td>
+          </tr>
+          <tr style="border-bottom: 1px solid var(--light-stone); background: #FAFAF8;">
+            <td style="padding: 11px 14px; font-weight: 500;">E — James' Place</td>
+            <td style="padding: 11px 14px; color: var(--forest); font-weight: 600;">~£378</td>
+            <td style="padding: 11px 14px;">2h 15m</td>
+            <td style="padding: 11px 14px; color: var(--moss);">✓ (+£40)</td>
+            <td style="padding: 11px 14px; color: var(--moss);">✓ Whole house</td>
+            <td style="padding: 11px 14px; color: var(--moss);">✓</td>
+            <td style="padding: 11px 14px; color: #B85C38;">✕</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- VOTE -->
+<div class="vote-section">
+  <h2>Drop your vote 👇</h2>
+  <p>Reply with a letter in the group chat</p>
+  <div class="vote-letters">
+    <div class="vote-letter">A</div>
+    <div class="vote-letter">B</div>
+    <div class="vote-letter">C</div>
+    <div class="vote-letter">D</div>
+    <div class="vote-letter">E</div>
+  </div>
+</div>
+
+<div class="footer-note">
+  13–15 March 2026 · 8 people · All prices approximate based on available listings
+</div>
+
+</body>
+</html>
